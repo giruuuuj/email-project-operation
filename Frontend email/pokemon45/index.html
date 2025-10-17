@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Email Generator | PitchPerfect AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #4cc9f0;
+            animation: pulse 2s infinite;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #4cc9f0, #f72585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #4cc9f0;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #4cc9f0;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #e0e0e0;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: rgba(76, 201, 240, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            border: 1px solid #4cc9f0;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(76, 201, 240, 0.5); }
+            to { box-shadow: 0 0 20px rgba(76, 201, 240, 0.8); }
+        }
+
+        .generator-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideUp 1s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px #4cc9f0;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #4cc9f0, #f72585);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto;
+            animation: pulse 2s infinite;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-container {
+            margin-top: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            animation: fadeIn 1s ease;
+            display: none;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-header h3 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, #4cc9f0, #f72585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .copy-btn {
+            background: rgba(76, 201, 240, 0.2);
+            color: #4cc9f0;
+            border: 1px solid #4cc9f0;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #4cc9f0;
+            color: #1a2a6c;
+        }
+
+        .generated-email {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(76, 201, 240, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-duration: 20s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-duration: 25s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 85%;
+            animation-duration: 15s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 15%;
+            animation-duration: 30s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -50px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: #b0b0b0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .tech-stack {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <h1>PitchPerfect AI</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Generator</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="ai-badge">
+                <i class="fas fa-brain"></i> Powered by Advanced AI
+            </div>
+            <h2>Generate Perfect Emails in Seconds</h2>
+            <p>Our AI-powered email generator creates professional, engaging, and effective emails tailored to your needs. Save time and make a great impression every time.</p>
+        </section>
+
+        <section class="generator-container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">AI Email Generator</h2>
+            
+            <div class="form-group">
+                <label for="email-type">Email Type</label>
+                <select id="email-type">
+                    <option value="professional">Professional/Business</option>
+                    <option value="sales">Sales Outreach</option>
+                    <option value="networking">Networking</option>
+                    <option value="follow-up">Follow-up</option>
+                    <option value="promotional">Promotional</option>
+                    <option value="personal">Personal</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="recipient">Recipient Type</label>
+                <input type="text" id="recipient" placeholder="e.g., Potential Client, Hiring Manager, Colleague">
+            </div>
+            
+            <div class="form-group">
+                <label for="key-points">Key Points to Include</label>
+                <textarea id="key-points" placeholder="Describe the main purpose of your email and key information to include..."></textarea>
+            </div>
+            
+            <div class="options">
+                <div class="form-group">
+                    <label for="tone">Tone</label>
+                    <select id="tone">
+                        <option value="professional">Professional</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="formal">Formal</option>
+                        <option value="persuasive">Persuasive</option>
+                        <option value="casual">Casual</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="length">Length</label>
+                    <select id="length">
+                        <option value="short">Short (3-5 sentences)</option>
+                        <option value="medium" selected>Medium (1 paragraph)</option>
+                        <option value="long">Long (Detailed)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn" id="generate-btn">
+                <i class="fas fa-magic"></i> Generate Email
+            </button>
+        </section>
+
+        <section class="result-container" id="result-container">
+            <div class="result-header">
+                <h3>Your Generated Email</h3>
+                <button class="copy-btn" id="copy-btn">
+                    <i class="far fa-copy"></i> Copy to Clipboard
+                </button>
+            </div>
+            <div class="generated-email" id="generated-email">
+                <!-- Generated email will appear here -->
+            </div>
+        </section>
+
+        <footer>
+            <p>Built with modern technologies for a seamless experience</p>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <i class="fab fa-react"></i> React
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-java"></i> Java Spring Boot
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-git-alt"></i> Git
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-database"></i> PostgreSQL
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-docker"></i> Docker
+                </div>
+            </div>
+            <p style="margin-top: 1.5rem;">&copy; 2023 PitchPerfect AI. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const emailType = document.getElementById('email-type').value;
+            const recipient = document.getElementById('recipient').value || 'Recipient';
+            const keyPoints = document.getElementById('key-points').value || 'No specific points provided';
+            const tone = document.getElementById('tone').value;
+            const length = document.getElementById('length').value;
+            
+            // Show loading state
+            const btn = document.getElementById('generate-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            btn.disabled = true;
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                // Generate email based on inputs
+                const generatedEmail = generateEmail(emailType, recipient, keyPoints, tone, length);
+                
+                // Display result
+                document.getElementById('generated-email').textContent = generatedEmail;
+                document.getElementById('result-container').style.display = 'block';
+                
+                // Reset button
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                
+                // Scroll to result
+                document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        });
+        
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const emailText = document.getElementById('generated-email').textContent;
+            navigator.clipboard.writeText(emailText).then(() => {
+                const btn = document.getElementById('copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+        
+        function generateEmail(type, recipient, points, tone, length) {
+            // This is a simplified version. In a real app, this would call the Spring Boot backend
+            const templates = {
+                professional: `Subject: Professional Inquiry
+
+Dear ${recipient},
+
+I hope this message finds you well. I am reaching out to discuss ${points}.
+
+I believe there is significant value in exploring this further and would appreciate the opportunity to connect at your earliest convenience.
+
+Thank you for your time and consideration.
+
+Best regards,
+[Your Name]`,
+                
+                sales: `Subject: Value Proposition for ${recipient}
+
+Hello ${recipient},
+
+I'm writing to introduce you to our solution that addresses ${points}.
+
+Our clients have seen remarkable results, and I'm confident we can deliver similar value for you. Would you be open to a brief call next week to explore this further?
+
+Looking forward to your response.
+
+Sincerely,
+[Your Name]`,
+                
+                networking: `Subject: Connecting - ${points}
+
+Hi ${recipient},
+
+I came across your profile and was impressed by your experience in the industry. I'm particularly interested in ${points}.
+
+I would appreciate the opportunity to connect and learn from your insights. Would you be available for a brief virtual coffee sometime next week?
+
+Thank you for considering my request.
+
+Best regards,
+[Your Name]`
+            };
+            
+            // Select template based on type or use a default
+            return templates[type] || templates['professional'];
+        }
+    </script>
+</body>
+</html>
